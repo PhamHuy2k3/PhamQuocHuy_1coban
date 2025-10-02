@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ category_display_name }} - Kaira{% endblock %}
+
+{% block content %}
+<section class="category-detail-hero py-5 bg-light text-center">
+    <div class="container">
+        <h1 class="display-3 text-uppercase mb-3">{{ category_display_name }}</h1>
+        <p class="lead">Khám phá bộ sưu tập {{ category_display_name }} của chúng tôi.</p>
+    </div>
+</section>
+
+<section class="category-products py-5">
+    <div class="container">
+        <div class="row">
+            {% for product in products %}
+            <div class="col-md-4 col-lg-3 mb-4">
+                <div class="product-item image-zoom-effect link-effect text-center">
+                    <div class="image-holder position-relative">
+                        <a href="{% url 'product_detail' pk=product.pk %}">
+                            {% if product.image %}
+                                <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-image img-fluid">
+                            {% else %}
+                                <img src="{% static 'images/default-product-image.jpg' %}" alt="Default Product Image" class="product-image img-fluid">
+                            {% endif %}
+                        </a>
+                        <a href="{% url 'product_detail' pk=product.pk %}" class="btn-icon btn-wishlist">
+                            <svg width="24" height="24" viewBox="0 0 24 24">
+                                <use xlink:href="#heart"></use>
+                            </svg>
+                        </a>
+                    </div>
+                    <div class="product-content mt-3">
+                        <h5 class="element-title text-uppercase fs-5">
+                            <a href="{% url 'product_detail' pk=product.pk %}">{{ product.name }}</a>
+                        </h5>
+                        <a href="{% url 'product_detail' pk=product.pk %}" class="text-decoration-none" data-after="Add to cart"><span>${{ product.price }}</span></a>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center">
+                <p>Không có sản phẩm nào trong danh mục này.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock content %}

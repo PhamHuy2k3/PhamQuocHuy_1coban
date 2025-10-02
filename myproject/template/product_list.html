@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}All Products - Kaira{% endblock %}
+
+{% block content %}
+<section class="product-list-page py-5">
+    <div class="container">
+        <h1 class="section-title text-center mb-5">All Products</h1>
+        <div class="row">
+            {% for product in products %}
+            <div class="col-md-4 mb-4">
+                <div class="product-item image-zoom-effect link-effect">
+                    <div class="image-holder position-relative">
+                        <a href="{% url 'product_detail' pk=product.pk %}">
+                            {% if product.image %}
+                                <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-image img-fluid">
+                            {% else %}
+                                <img src="{% static 'images/default-product-image.jpg' %}" alt="Default Product Image" class="product-image img-fluid">
+                            {% endif %}
+                        </a>
+                        <a href="#" class="btn-icon btn-wishlist">
+                            <svg width="24" height="24" viewBox="0 0 24 24">
+                                <use xlink:href="#heart"></use>
+                            </svg>
+                        </a>
+                        <div class="product-content">
+                            <h5 class="element-title text-uppercase fs-5 mt-3">
+                                <a href="{% url 'product_detail' pk=product.pk %}">{{ product.name }}</a>
+                            </h5>
+                            <a href="#" class="text-decoration-none" data-after="Add to cart"><span>${{ product.price }}</span></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12">
+                <p>No products available.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}
