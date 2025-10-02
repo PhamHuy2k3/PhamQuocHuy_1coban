@@ -3,18 +3,17 @@ from .models import Post, Product, AboutDetail
 
 def index(request):
     posts = Post.objects.all().order_by('-created_at')[:3]
-    all_products = Product.objects.all().order_by('-created_at') # Fetch all products for the main section
+    all_products = Product.objects.all().order_by('-created_at')
     new_arrival_products = Product.objects.filter(category='new_arrival').order_by('-created_at')[:5]
     best_selling_products = Product.objects.filter(category='best_selling').order_by('-created_at')[:5]
-    you_may_also_like_products = Product.objects.filter(category='you_may_also_like').order_by('?')[
-                                 :5]  # '?' for random order
+    you_may_also_like_products = Product.objects.filter(category='you_may_also_like').order_by('?')[:5]  
     men_products = Product.objects.filter(category='men').order_by('-created_at')[:3]
     women_products = Product.objects.filter(category='women').order_by('-created_at')[:3]
     accessories_products = Product.objects.filter(category='accessories').order_by('-created_at')[:3]
 
     dic = {
         'posts': posts,
-        'all_products': all_products, # Pass all products
+        'all_products': all_products,
         'new_arrival_products': new_arrival_products,
         'best_selling_products': best_selling_products,
         'you_may_also_like_products': you_may_also_like_products,
@@ -26,7 +25,6 @@ def index(request):
     return render(request, 'index.html', context=dic)
 
 def category_detail(request, category_slug):
-    # Map slug to display name
     category_display_name = dict(Product.CATEGORY_CHOICES).get(category_slug, category_slug.replace('_', ' ').title())
     products = Product.objects.filter(category=category_slug).order_by('-created_at')
     dic = {
